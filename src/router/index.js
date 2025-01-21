@@ -10,6 +10,7 @@ import System from '../views/System.vue';
 import User from '../views/system/User.vue';
 import Role from '../views/system/Role.vue';
 import Menu from '../views/system/Menu.vue';
+import NotFound from '../views/NotFound.vue';
 
 const routes = [
     {
@@ -83,6 +84,11 @@ const routes = [
                 ],
             },
         ]
+    },
+    {
+        path: '/:pathMatch(.*)*', // 通配符路由，匹配所有未定义的路由
+        name: 'NotFound',
+        component: NotFound,
     },
 
 ];

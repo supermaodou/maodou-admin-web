@@ -61,7 +61,7 @@ export default {
     data() {
         return {
             // 当前激活的菜单项
-            activeMenu: '/',
+            activeMenu: '/dashboard',
         };
     },
     methods: {
