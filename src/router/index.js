@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import Login from '../views/Login.vue';
 import Home from '../views/Home.vue';
 import Dashboard from '../views/Dashboard.vue';
 import About from '../views/About.vue';
 import Settings from '../views/Settings.vue';
 import Profile from '../views/settings/Profile.vue';
 import Security from '../views/settings/Security.vue';
-import Login from '../views/Login.vue'; // 引入登录页面
+import System from '../views/System.vue';
+import User from '../views/system/User.vue';
+import Role from '../views/system/Role.vue';
+import Menu from '../views/system/Menu.vue';
 
 const routes = [
     {
@@ -35,6 +39,31 @@ const routes = [
                 component: About,
                 meta: { requiresAuth: true }, // 需要登录才能访问
             },
+            // 系统管理
+            {
+                path: '/system',
+                name: 'System',
+                component: System,
+                meta: { requiresAuth: true }, // 需要登录才能访问
+                children: [
+                    {
+                        path: 'user',
+                        name: 'User',
+                        component: User,
+                    },
+                    {
+                        path: 'role',
+                        name: 'Role',
+                        component: Role,
+                    },
+                    {
+                        path: 'menu',
+                        name: 'Menu',
+                        component: Menu,
+                    },
+                ],
+            },
+            // 设置
             {
                 path: '/settings',
                 name: 'Settings',
