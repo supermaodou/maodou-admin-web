@@ -57,7 +57,7 @@
 
 <script>
 export default {
-    name: 'Home',
+    name: 'Dashboard',
     data() {
         return {
             // 当前激活的菜单项
