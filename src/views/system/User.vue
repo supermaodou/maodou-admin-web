@@ -54,8 +54,8 @@
         <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="handleEdit(scope.row)">修改</el-button>
-            <el-button type="text" size="small" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button link type="primary" size="small" @click="handleEdit(scope.row)" v-hasPermi="['system:user:edit']">修改</el-button>
+            <el-button type="text" size="small" @click="handleDelete(scope.row)" v-hasPermi="['system:user:remove']">删除</el-button>
             <!-- <el-dropdown size="small">
               <el-button size="small" type="text">更多</el-button>
               <el-dropdown-menu slot="dropdown">

@@ -6,6 +6,7 @@ import ElementPlus from 'element-plus'; // 引入 Element Plus
 import 'element-plus/dist/index.css'; // 引入 Element Plus 的样式文件
 import zhCn from 'element-plus/es/locale/lang/zh-cn'; // 引入中文语言包
 import store from './store'; // 引入 Vuex Store
+import directive from './directive'; // 引入directive
 
 const app = createApp(App);
 
@@ -14,8 +15,10 @@ app.use(router);
 // 使用 Element Plus 并设置 Element Plus 的默认语言
 app.use(ElementPlus, {
     locale: zhCn,
-})
+});
 // 使用 Vuex Store
 app.use(store);
+// 使用自定义指令
+app.use(directive);
 
 app.mount('#app');
