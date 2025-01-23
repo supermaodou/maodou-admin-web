@@ -10,76 +10,82 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: () => import('../views/Login.vue'),
+        meta: { hidden: true }, // 隐藏菜单
     },
     {
         path: '/home',
         name: 'Home',
         component: () => import('../views/Home.vue'),
-        meta: { requiresAuth: true }, // 需要登录才能访问
+        meta: { requiresAuth: true, title: '首页', icon: 'el-icon-menu' }, // 需要登录才能访问
         children: [
             {
                 path: '/dashboard',
                 name: 'Dashboard',
                 component: () => import('../views/Dashboard.vue'),
-                meta: { requiresAuth: true }, // 需要登录才能访问
-            },
-            {
-                path: '/about',
-                name: 'About',
-                component: () => import('../views/About.vue'),
-                meta: { requiresAuth: true }, // 需要登录才能访问
+                meta: { requiresAuth: true, title: '仪表盘', icon: 'el-icon-data-line' },
             },
             // 系统管理
             {
                 path: '/system',
                 name: 'System',
                 component: () => import('../views/System.vue'),
-                meta: { requiresAuth: true }, // 需要登录才能访问
+                meta: { requiresAuth: true, title: '系统管理', icon: 'el-icon-setting' },
                 children: [
                     {
                         path: 'user',
                         name: 'User',
                         component: () => import('../views/system/User.vue'),
+                        meta: { title: '用户管理', icon: 'el-icon-user' },
                     },
                     {
                         path: 'role',
                         name: 'Role',
                         component: () => import('../views/system/Role.vue'),
+                        meta: { title: '角色管理', icon: 'el-icon-s-custom' },
                     },
                     {
                         path: 'menu',
                         name: 'Menu',
                         component: () => import('../views/system/Menu.vue'),
+                        meta: { title: '菜单管理', icon: 'el-icon-menu' },
                     },
                 ],
             },
-            // 设置
+            // 个人设置
             {
                 path: '/settings',
                 name: 'Settings',
                 component: () => import('../views/Settings.vue'),
-                meta: { requiresAuth: true }, // 需要登录才能访问
+                meta: { requiresAuth: true, title: '设置', icon: 'el-icon-setting' },
                 children: [
                     {
                         path: 'profile',
                         name: 'Profile',
                         component: () => import('../views/settings/Profile.vue'),
+                        meta: { title: '个人资料', icon: 'el-icon-user' },
                     },
                     {
                         path: 'security',
                         name: 'Security',
                         component: () => import('../views/settings/Security.vue'),
+                        meta: { title: '安全设置', icon: 'el-icon-lock' },
                     },
                 ],
             },
-        ]
+            {
+                path: '/about',
+                name: 'About',
+                component: () => import('../views/About.vue'),
+                meta: { requiresAuth: true, title: '关于', icon: 'el-icon-document' },
+            },
+        ],
     },
     {
         path: '/:pathMatch(.*)*', // 通配符路由，匹配所有未定义的路由
         name: 'NotFound',
         component: () => import('../views/NotFound.vue'),
+        meta: { hidden: true }, // 隐藏菜单
     },
-
 ];
 
 const router = createRouter({

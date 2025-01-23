@@ -9,17 +9,17 @@
                 <template v-for="menu in menus" :key="menu.path">
                     <!-- 一级菜单 -->
                     <el-menu-item v-if="!menu.children || menu.children.length === 0" :index="menu.path">
-                        <i :class="menu.icon"></i>
+                        <component style="width: 1em; height: 1em; margin-right: 8px" :is="menu.icon" />
                         <span>{{ menu.title }}</span>
                     </el-menu-item>
                     <!-- 嵌套菜单 -->
                     <el-sub-menu v-else :index="menu.path">
                         <template #title>
-                            <i :class="menu.icon"></i>
+                            <component style="width: 1em; height: 1em; margin-right: 8px" :is="menu.icon" />
                             <span>{{ menu.title }}</span>
                         </template>
                         <el-menu-item v-for="child in menu.children" :key="child.path" :index="child.path">
-                            <i :class="child.icon"></i>
+                            <component style="width: 1em; height: 1em; margin-right: 8px" :is="child.icon" />
                             <span>{{ child.title }}</span>
                         </el-menu-item>
                     </el-sub-menu>
@@ -32,7 +32,12 @@
             <!-- 头部 -->
             <el-header
                 style="background-color: #409EFF; color: white; line-height: 60px; display: flex; justify-content: space-between; align-items: center;">
-                <span>管理系统</span>
+                <!-- 面包屑 -->
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.path">
+                        {{ item.title }}
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
                 <!-- 用户信息 -->
                 <el-dropdown>
                     <div style="display: flex; align-items: center; cursor: pointer;">
@@ -51,6 +56,11 @@
             <el-main>
                 <router-view /> <!-- 嵌套路由的占位符 -->
             </el-main>
+
+            <!-- 底部 -->
+            <el-footer style="background-color: #409EFF; color: white; text-align: center; line-height: 60px;">
+                版权所有 © 2023 管理系统
+            </el-footer>
         </el-container>
     </el-container>
 </template>
@@ -72,6 +82,22 @@ export default {
         // 动态获取菜单
         menus() {
             return this.$store.getters.getMenus;
+        },
+        // 动态生成面包屑
+        breadcrumbs() {
+            const breadcrumbs = [];
+            const matchedRoutes = this.$route.matched;
+
+            matchedRoutes.forEach((route) => {
+                if (route.meta?.title) {
+                    breadcrumbs.push({
+                        path: route.path,
+                        title: route.meta.title,
+                    });
+                }
+            });
+
+            return breadcrumbs;
         },
     },
     methods: {

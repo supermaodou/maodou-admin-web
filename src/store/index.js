@@ -74,37 +74,31 @@ function generateMenus(roles) {
             {
                 path: '/dashboard',
                 name: 'Dashboard',
-                icon: 'el-icon-menu',
-                title: '首页',
-            },
-            {
-                path: '/about',
-                name: 'About',
-                icon: 'el-icon-document',
-                title: '关于',
+                icon: 'Menu',
+                title: '仪表盘',
             },
             {
                 path: '/system',
                 name: 'System',
-                icon: 'el-icon-setting',
+                icon: 'Setting',
                 title: '系统管理',
                 children: [
                     {
                         path: '/system/user',
                         name: 'User',
-                        icon: 'el-icon-user',
+                        icon: 'User',
                         title: '用户管理',
                     },
                     {
                         path: '/system/role',
                         name: 'Role',
-                        icon: 'el-icon-s-custom',
+                        icon: 'UserFilled',
                         title: '角色管理',
                     },
                     {
                         path: '/system/menu',
                         name: 'Menu',
-                        icon: 'el-icon-menu',
+                        icon: 'Menu',
                         title: '菜单管理',
                     },
                 ],
@@ -112,24 +106,29 @@ function generateMenus(roles) {
             {
                 path: '/settings',
                 name: 'Settings',
-                icon: 'el-icon-setting',
-                title: '设置',
+                icon: 'Setting',
+                title: '个人设置',
                 children: [
                     {
                         path: '/settings/profile',
                         name: 'Profile',
-                        icon: 'el-icon-user',
+                        icon: 'User',
                         title: '个人资料',
                     },
                     {
                         path: '/settings/security',
                         name: 'Security',
-                        icon: 'el-icon-lock',
+                        icon: 'Lock',
                         title: '安全设置',
                     }
                 ],
             },
-
+            {
+                path: '/about',
+                name: 'About',
+                icon: 'Document',
+                title: '关于',
+            },
         );
     }
 
