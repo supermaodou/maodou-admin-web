@@ -31,7 +31,7 @@
         <el-container>
             <!-- 头部 -->
             <el-header
-                style="background-color: #409EFF; color: white; line-height: 60px; display: flex; justify-content: space-between; align-items: center;">
+                style="background-color: #FFFFFF; color: white; line-height: 60px; display: flex; justify-content: space-between; align-items: center;">
                 <!-- 面包屑 -->
                 <el-breadcrumb separator="/">
                     <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.path">
@@ -58,7 +58,7 @@
             </el-main>
 
             <!-- 底部 -->
-            <el-footer style="background-color: #409EFF; color: white; text-align: center; line-height: 60px;">
+            <el-footer style="background-color: #FFFFFF; color: #304156; text-align: center; line-height: 60px;">
                 版权所有 © 2023 管理系统
             </el-footer>
         </el-container>

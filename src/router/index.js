@@ -28,7 +28,6 @@ const routes = [
             {
                 path: '/system',
                 name: 'System',
-                component: () => import('../views/System.vue'),
                 meta: { requiresAuth: true, title: '系统管理', icon: 'el-icon-setting' },
                 children: [
                     {
@@ -55,7 +54,6 @@ const routes = [
             {
                 path: '/settings',
                 name: 'Settings',
-                component: () => import('../views/Settings.vue'),
                 meta: { requiresAuth: true, title: '个人设置', icon: 'el-icon-setting' },
                 children: [
                     {
