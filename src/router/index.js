@@ -56,7 +56,7 @@ const routes = [
                 path: '/settings',
                 name: 'Settings',
                 component: () => import('../views/Settings.vue'),
-                meta: { requiresAuth: true, title: '设置', icon: 'el-icon-setting' },
+                meta: { requiresAuth: true, title: '个人设置', icon: 'el-icon-setting' },
                 children: [
                     {
                         path: 'profile',
