@@ -1,60 +1,57 @@
 import { createStore } from 'vuex';
 
-// 创建 Vuex Store
+// 从 localStorage 中恢复状态
+const storedUserInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
+const storedPermissions = JSON.parse(localStorage.getItem('permissions')) || [];
+const storedRoles = JSON.parse(localStorage.getItem('roles')) || [];
+
 const store = createStore({
   state: {
-    // 全局状态
-    userList: [
-      {
-        id: 1,
-        username: 'admin',
-        nickname: '管理员',
-        department: '技术部',
-        phone: '13800138000',
-        status: '1',
-        createTime: '2023-10-01 12:00:00',
-      },
-      {
-        id: 2,
-        username: 'user1',
-        nickname: '用户1',
-        department: '市场部',
-        phone: '13800138001',
-        status: '0',
-        createTime: '2023-10-02 12:00:00',
-      },
-    ],
+    userInfo: storedUserInfo, // 用户信息
+    permissions: storedPermissions, // 权限列表
+    roles: storedRoles, // 角色列表
   },
   mutations: {
-    // 修改状态的方法
-    ADD_USER(state, user) {
-      state.userList.push(user);
+    // 设置用户信息、权限和角色
+    SET_USER_INFO(state, userInfo) {
+      state.userInfo = userInfo;
+      state.permissions = userInfo.permissions || [];
+      state.roles = userInfo.roles || [];
+
+      // 将状态存储到 localStorage
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      localStorage.setItem('permissions', JSON.stringify(state.permissions));
+      localStorage.setItem('roles', JSON.stringify(state.roles));
     },
-    DELETE_USER(state, id) {
-      state.userList = state.userList.filter((user) => user.id !== id);
-    },
-    UPDATE_USER(state, updatedUser) {
-      const index = state.userList.findIndex((user) => user.id === updatedUser.id);
-      if (index !== -1) {
-        state.userList.splice(index, 1, updatedUser);
-      }
+    // 清除用户信息、权限和角色
+    CLEAR_USER_INFO(state) {
+      state.userInfo = null;
+      state.permissions = [];
+      state.roles = [];
+
+      // 清除 localStorage
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('permissions');
+      localStorage.removeItem('roles');
     },
   },
   actions: {
-    // 异步操作
-    addUser({ commit }, user) {
-      commit('ADD_USER', user);
+    // 登录
+    login({ commit }, userInfo) {
+      commit('SET_USER_INFO', userInfo);
     },
-    deleteUser({ commit }, id) {
-      commit('DELETE_USER', id);
-    },
-    updateUser({ commit }, user) {
-      commit('UPDATE_USER', user);
+    // 登出
+    logout({ commit }) {
+      commit('CLEAR_USER_INFO');
     },
   },
   getters: {
-    // 计算属性
-    getUserList: (state) => state.userList,
+    // 获取用户信息
+    getUserInfo: (state) => state.userInfo,
+    // 获取权限列表
+    getPermissions: (state) => state.permissions,
+    // 获取角色列表
+    getRoles: (state) => state.roles,
   },
 });
 

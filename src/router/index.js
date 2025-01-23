@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Login from '../views/Login.vue';
-import Home from '../views/Home.vue';
+import store from '../store';
+// import Login from '../views/Login.vue';
+// import Home from '../views/Home.vue';
 import Dashboard from '../views/Dashboard.vue';
 import About from '../views/About.vue';
 import Settings from '../views/Settings.vue';
@@ -20,12 +21,12 @@ const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: Login,
+        component: import('../views/Login.vue'),
     },
     {
         path: '/home',
         name: 'Home',
-        component: Home,
+        component: import('../views/Home.vue'),
         meta: { requiresAuth: true }, // 需要登录才能访问
         children: [
             {
@@ -100,7 +101,8 @@ const router = createRouter({
 
 // 路由守卫：检查用户是否登录
 router.beforeEach((to, from, next) => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated'); // 检查登录状态
+    // const isAuthenticated = !!store.getters.getUserInfo; // 通过 store 访问 Vuex
+    const isAuthenticated = !!store.state.userInfo; // 检查 Vuex 中是否有用户信息
     if (to.meta.requiresAuth && !isAuthenticated) {
         next('/login'); // 未登录则跳转到登录页面
     } else {

@@ -16,8 +16,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSearch">查询</el-button>
-          <el-button @click="onReset">重置</el-button>
+          <el-button type="primary"  @click="onSearch"><el-icon><Search /></el-icon>查询</el-button>
+          <el-button @click="onReset"><el-icon><RefreshRight /></el-icon>重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -27,8 +27,8 @@
       <!-- 功能按钮 -->
       <el-row style="margin-bottom: 20px;">
         <el-col :span="24">
-          <el-button type="primary" @click="handleAdd">新增</el-button>
-          <el-button type="danger" @click="handleBatchDelete">批量删除</el-button>
+          <el-button type="primary" @click="handleAdd" v-hasPermi="['system:user:add']"><el-icon><Plus /></el-icon>新增</el-button>
+          <el-button type="danger" @click="handleBatchDelete" v-hasPermi="['system:user:batchDelete']">批量删除</el-button>
         </el-col>
       </el-row>
 
@@ -54,8 +54,8 @@
         <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="handleEdit(scope.row)" v-hasPermi="['system:user:edit']">修改</el-button>
-            <el-button type="text" size="small" @click="handleDelete(scope.row)" v-hasPermi="['system:user:remove']">删除</el-button>
+            <el-button link type="primary" size="small" @click="handleEdit(scope.row)" v-hasPermi="['system:user:edit']"><el-icon><EditPen /></el-icon>修改</el-button>
+            <el-button link type="danger" size="small" @click="handleDelete(scope.row)" v-hasPermi="['system:user:delete']"><el-icon><Delete /></el-icon>删除</el-button>
             <!-- <el-dropdown size="small">
               <el-button size="small" type="text">更多</el-button>
               <el-dropdown-menu slot="dropdown">
