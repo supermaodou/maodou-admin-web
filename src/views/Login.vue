@@ -55,18 +55,18 @@ export default {
                         userInfo = {
                             username: 'admin',
                             nickname: '管理员',
-                            permissions: ['system:user:add', 'system:user:edit', 'system:user:delete', 'system:user:batchDelete'], // 管理员权限
-                            roles: ['admin'], // 管理员角色
+                            permissions: ['system:user:add', 'system:user:edit', 'system:user:delete', 'system:user:batchDelete'],
+                            roles: ['admin'],
                         };
                     }
-                    
+
                     // 普通用户账号
                     else if (this.loginForm.username === 'user' && this.loginForm.password === '1') {
                         userInfo = {
                             username: 'user',
                             nickname: '普通用户',
-                            permissions: ['system:user:view'], // 普通用户权限
-                            roles: ['user'], // 普通用户角色
+                            permissions: ['system:user:view'],
+                            roles: ['user'],
                         };
                     }
 
@@ -77,9 +77,9 @@ export default {
                     }
 
                     // 存储用户信息并跳转到首页
-                    console.log('登录成功，用户信息：', userInfo); // 调试信息
+                    console.log('登录成功，用户信息：', userInfo);
                     this.$store.dispatch('login', userInfo); // 调用 Vuex Action 存储用户信息和权限
-                    console.log('Vuex 状态：', this.$store.state); // 调试信息
+                    console.log('Vuex 状态：', this.$store.state);
                     this.$router.push('/dashboard'); // 跳转到首页
                 } else {
                     return false;

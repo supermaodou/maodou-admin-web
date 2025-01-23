@@ -1,39 +1,33 @@
 <template>
     <el-container style="height: 100vh;">
-        <!-- 侧边栏 -->
+        <!-- 左侧菜单栏 -->
         <el-aside width="200px" style="background-color: #304156;">
             <h2 style="color: white; text-align: center; padding: 20px 0;">管理系统</h2>
             <el-menu :default-active="activeMenu" background-color="#304156" text-color="#fff"
                 active-text-color="#ffd04b" @select="handleMenuSelect">
-                <el-menu-item index="/dashboard">
-                    <i class="el-icon-menu"></i>
-                    <span>首页</span>
-                </el-menu-item>
-                <el-menu-item index="/about">
-                    <i class="el-icon-document"></i>
-                    <span>关于</span>
-                </el-menu-item>
-                <el-sub-menu index="/system">
-                    <template #title>
-                        <i class="el-icon-setting"></i>
-                        <span>系统管理</span>
-                    </template>
-                    <el-menu-item index="/system/user">用户管理</el-menu-item>
-                    <el-menu-item index="/system/role">角色管理</el-menu-item>
-                    <el-menu-item index="/system/menu">菜单管理</el-menu-item>
-                </el-sub-menu>
-                <el-sub-menu index="/settings">
-                    <template #title>
-                        <i class="el-icon-setting"></i>
-                        <span>设置</span>
-                    </template>
-                    <el-menu-item index="/settings/profile">个人资料</el-menu-item>
-                    <el-menu-item index="/settings/security">安全设置</el-menu-item>
-                </el-sub-menu>
+                <!-- 动态生成菜单 -->
+                <template v-for="menu in menus" :key="menu.path">
+                    <!-- 一级菜单 -->
+                    <el-menu-item v-if="!menu.children || menu.children.length === 0" :index="menu.path">
+                        <i :class="menu.icon"></i>
+                        <span>{{ menu.title }}</span>
+                    </el-menu-item>
+                    <!-- 嵌套菜单 -->
+                    <el-sub-menu v-else :index="menu.path">
+                        <template #title>
+                            <i :class="menu.icon"></i>
+                            <span>{{ menu.title }}</span>
+                        </template>
+                        <el-menu-item v-for="child in menu.children" :key="child.path" :index="child.path">
+                            <i :class="child.icon"></i>
+                            <span>{{ child.title }}</span>
+                        </el-menu-item>
+                    </el-sub-menu>
+                </template>
             </el-menu>
         </el-aside>
 
-        <!-- 主容器 -->
+        <!-- 右侧内容区域 -->
         <el-container>
             <!-- 头部 -->
             <el-header
@@ -55,13 +49,8 @@
 
             <!-- 主体内容 -->
             <el-main>
-                <router-view /> <!-- 路由占位符 -->
+                <router-view /> <!-- 嵌套路由的占位符 -->
             </el-main>
-
-            <!-- 底部 -->
-            <el-footer style="background-color: #409EFF; color: white; text-align: center; line-height: 60px;">
-                版权所有 © 2023 管理系统
-            </el-footer>
         </el-container>
     </el-container>
 </template>
@@ -71,15 +60,18 @@ export default {
     name: 'Home',
     data() {
         return {
-            // 当前激活的菜单项
-            activeMenu: '/dashboard',
-            userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', // 用户头像
+            activeMenu: this.$route.path, // 当前激活的菜单项
+            userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
         };
     },
     computed: {
         // 动态获取用户名
         username() {
             return this.$store.getters.getUserInfo?.nickname || '未知用户';
+        },
+        // 动态获取菜单
+        menus() {
+            return this.$store.getters.getMenus;
         },
     },
     methods: {
@@ -107,10 +99,6 @@ export default {
             },
             immediate: true,
         },
-    },
-    created() {
-        // 初始化时设置当前激活的菜单项
-        this.activeMenu = this.$route.path;
     },
 };
 </script>
