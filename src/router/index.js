@@ -9,47 +9,47 @@ const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: import('../views/Login.vue'),
+        component: () => import('../views/Login.vue'),
     },
     {
         path: '/home',
         name: 'Home',
-        component: import('../views/Home.vue'),
+        component: () => import('../views/Home.vue'),
         meta: { requiresAuth: true }, // 需要登录才能访问
         children: [
             {
                 path: '/dashboard',
                 name: 'Dashboard',
-                component: import('../views/Dashboard.vue'),
+                component: () => import('../views/Dashboard.vue'),
                 meta: { requiresAuth: true }, // 需要登录才能访问
             },
             {
                 path: '/about',
                 name: 'About',
-                component: import('../views/About.vue'),
+                component: () => import('../views/About.vue'),
                 meta: { requiresAuth: true }, // 需要登录才能访问
             },
             // 系统管理
             {
                 path: '/system',
                 name: 'System',
-                component: import('../views/System.vue'),
+                component: () => import('../views/System.vue'),
                 meta: { requiresAuth: true }, // 需要登录才能访问
                 children: [
                     {
                         path: 'user',
                         name: 'User',
-                        component: import('../views/system/User.vue'),
+                        component: () => import('../views/system/User.vue'),
                     },
                     {
                         path: 'role',
                         name: 'Role',
-                        component: import('../views/system/Role.vue'),
+                        component: () => import('../views/system/Role.vue'),
                     },
                     {
                         path: 'menu',
                         name: 'Menu',
-                        component: import('../views/system/Menu.vue'),
+                        component: () => import('../views/system/Menu.vue'),
                     },
                 ],
             },
@@ -57,18 +57,18 @@ const routes = [
             {
                 path: '/settings',
                 name: 'Settings',
-                component: import('../views/Settings.vue'),
+                component: () => import('../views/Settings.vue'),
                 meta: { requiresAuth: true }, // 需要登录才能访问
                 children: [
                     {
                         path: 'profile',
                         name: 'Profile',
-                        component: import('../views/settings/Profile.vue'),
+                        component: () => import('../views/settings/Profile.vue'),
                     },
                     {
                         path: 'security',
                         name: 'Security',
-                        component: import('../views/settings/Security.vue'),
+                        component: () => import('../views/settings/Security.vue'),
                     },
                 ],
             },
@@ -77,7 +77,7 @@ const routes = [
     {
         path: '/:pathMatch(.*)*', // 通配符路由，匹配所有未定义的路由
         name: 'NotFound',
-        component: import('../views/NotFound.vue'),
+        component: () => import('../views/NotFound.vue'),
     },
 
 ];

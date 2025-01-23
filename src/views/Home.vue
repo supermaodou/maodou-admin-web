@@ -39,7 +39,18 @@
             <el-header
                 style="background-color: #409EFF; color: white; line-height: 60px; display: flex; justify-content: space-between; align-items: center;">
                 <span>管理系统</span>
-                <el-button type="primary" style="color: white;" @click="handleLogout">退出登录</el-button>
+                <!-- 用户信息 -->
+                <el-dropdown>
+                    <div style="display: flex; align-items: center; cursor: pointer;">
+                        <el-avatar :size="40" :src="userAvatar" style="margin-right: 10px;"></el-avatar>
+                        <span>{{ username }}</span>
+                    </div>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
             </el-header>
 
             <!-- 主体内容 -->
@@ -57,12 +68,19 @@
 
 <script>
 export default {
-    name: 'Dashboard',
+    name: 'Home',
     data() {
         return {
             // 当前激活的菜单项
             activeMenu: '/dashboard',
+            userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', // 用户头像
         };
+    },
+    computed: {
+        // 动态获取用户名
+        username() {
+            return this.$store.getters.getUserInfo?.nickname || '未知用户';
+        },
     },
     methods: {
         // 处理菜单项选择
@@ -71,8 +89,14 @@ export default {
         },
         // 处理退出登录
         handleLogout() {
-            localStorage.removeItem('isAuthenticated'); // 清除登录状态
-            this.$router.push('/login'); // 跳转到登录页面
+            this.$confirm('确定要退出登录吗？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }).then(() => {
+                this.$store.dispatch('logout'); // 调用 Vuex Action 清除用户信息
+                this.$router.push('/login'); // 跳转到登录页面
+            });
         },
     },
     watch: {
@@ -96,5 +120,14 @@ body,
 html {
     margin: 0;
     padding: 0;
+}
+
+.el-main {
+    padding: 0;
+    /* 移除默认的内边距 */
+    height: calc(100vh - 60px);
+    /* 减去头部高度 */
+    overflow: auto;
+    /* 如果内容超出屏幕，显示滚动条 */
 }
 </style>
