@@ -9,17 +9,17 @@
                 <template v-for="menu in menus" :key="menu.path">
                     <!-- 一级菜单 -->
                     <el-menu-item v-if="!menu.children || menu.children.length === 0" :index="menu.path">
-                        <component style="width: 1em; height: 1em; margin-right: 8px" :is="menu.icon" />
+                        <component class="icon-component" :is="menu.icon" />
                         <span>{{ menu.title }}</span>
                     </el-menu-item>
                     <!-- 嵌套菜单 -->
                     <el-sub-menu v-else :index="menu.path">
                         <template #title>
-                            <component style="width: 1em; height: 1em; margin-right: 8px" :is="menu.icon" />
+                            <component class="icon-component" :is="menu.icon" />
                             <span>{{ menu.title }}</span>
                         </template>
                         <el-menu-item v-for="child in menu.children" :key="child.path" :index="child.path">
-                            <component style="width: 1em; height: 1em; margin-right: 8px" :is="child.icon" />
+                            <component class="icon-component" :is="child.icon" />
                             <span>{{ child.title }}</span>
                         </el-menu-item>
                     </el-sub-menu>
@@ -30,8 +30,7 @@
         <!-- 右侧内容区域 -->
         <el-container>
             <!-- 头部 -->
-            <el-header
-                style="background-color: #FFFFFF; color: white; line-height: 60px; display: flex; justify-content: space-between; align-items: center;">
+            <el-header class="header">
                 <!-- 面包屑 -->
                 <el-breadcrumb separator="/">
                     <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.path">
@@ -53,7 +52,7 @@
             </el-header>
 
             <!-- 主体内容 -->
-            <el-main>
+            <el-main class="main-content">
                 <router-view /> <!-- 嵌套路由的占位符 -->
             </el-main>
 
@@ -137,11 +136,45 @@ html {
 }
 
 .el-main {
-    padding: 0;
     /* 移除默认的内边距 */
-    height: calc(100vh - 60px);
+    padding: 0;
     /* 减去头部高度 */
+    height: calc(100vh - 60px);
     overflow: auto;
     /* 如果内容超出屏幕，显示滚动条 */
+}
+
+.icon-component {
+    width: 1em;
+    height: 1em;
+    margin-right: 8px
+}
+
+/* 顶部导航栏样式 */
+.header {
+    background-color: #FFFFFF;
+    color: white;
+    line-height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* 添加阴影 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* 增加内边距 */
+    padding: 0 20px;
+    /* 增加与内容部分的间隙 */
+    margin-bottom: 10px;
+}
+
+/* 主体内容样式 */
+.main-content {
+    /* 增加内边距 */
+    padding: 20px;
+    /* 减去头部高度和间隙 */
+    height: calc(100vh - 70px);
+    /* 如果内容超出屏幕，显示滚动条 */
+    overflow: auto;
+    /* 添加背景色 */
+    background-color: #f5f7fa;
 }
 </style>

@@ -2,7 +2,7 @@
   <div>
     <!-- 顶部：搜索过滤 -->
     <el-card style="margin-bottom: 20px;">
-      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+      <el-form :inline="true" :model="searchForm" class="demo-form-inline search-form">
         <el-form-item label="用户名称">
           <el-input v-model="searchForm.username" placeholder="请输入用户名称"></el-input>
         </el-form-item>
@@ -16,7 +16,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary"  @click="onSearch"><el-icon><Search /></el-icon>查询</el-button>
+          <el-button type="primary" @click="onSearch"><el-icon><Search /></el-icon>查询</el-button>
           <el-button @click="onReset"><el-icon><RefreshRight /></el-icon>重置</el-button>
         </el-form-item>
       </el-form>
@@ -25,11 +25,9 @@
     <!-- 功能按钮和用户列表 -->
     <el-card>
       <!-- 功能按钮 -->
-      <el-row style="margin-bottom: 20px;">
-        <el-col :span="24">
-          <el-button type="primary" @click="handleAdd" v-hasPermi="['system:user:add']"><el-icon><Plus /></el-icon>新增</el-button>
-          <el-button type="danger" @click="handleBatchDelete" v-hasPermi="['system:user:batchDelete']">批量删除</el-button>
-        </el-col>
+      <el-row class="action-buttons">
+        <el-button type="primary" @click="handleAdd" v-hasPermi="['system:user:add']"><el-icon><Plus /></el-icon>新增</el-button>
+        <el-button type="danger" @click="handleBatchDelete" v-hasPermi="['system:user:batchDelete']">批量删除</el-button>
       </el-row>
 
       <!-- 用户列表 -->
@@ -78,7 +76,6 @@
         @current-change="handlePageChange"
         layout="total, sizes, prev, pager, next, jumper"
       ></el-pagination>
-
     </el-card>
   </div>
 </template>
@@ -194,7 +191,30 @@ export default {
 </script>
 
 <style scoped>
-.el-card {
+/* 搜索表单靠左排列 */
+.search-form {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* 搜索表单表单项之间的间距 */
+.search-form .el-form-item {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+/* 功能按钮靠左排列 */
+.action-buttons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   margin-bottom: 20px;
+}
+
+/* 功能按钮之间的间距 */
+.action-buttons .el-button {
+  margin-right: 10px;
 }
 </style>
