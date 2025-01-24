@@ -111,6 +111,24 @@ export default {
           status: '0',
           createTime: '2023-10-02 12:00:00',
         },
+        {
+          id: 3,
+          username: 'user2',
+          nickname: '用户2',
+          department: '财务部',
+          phone: '13800138002',
+          status: '1',
+          createTime: '2023-10-03 12:00:00',
+        },
+        {
+          id: 4,
+          username: 'user3',
+          nickname: '用户3',
+          department: '运营部',
+          phone: '13800138003',
+          status: '0',
+          createTime: '2023-10-04 12:00:00',
+        },
       ],
       // 分页数据
       pagination: {

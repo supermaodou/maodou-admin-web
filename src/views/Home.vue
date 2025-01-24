@@ -29,7 +29,7 @@
 
         <!-- 右侧内容区域 -->
         <el-container>
-            <!-- 头部 -->
+            <!-- 顶部导航栏 -->
             <el-header class="header">
                 <!-- 面包屑 -->
                 <el-breadcrumb separator="/">
@@ -51,6 +51,14 @@
                 </el-dropdown>
             </el-header>
 
+            <!-- 标签页区域 -->
+            <div class="tabs-container">
+                <el-tabs v-model="activeTab" type="card" closable @tab-remove="handleTabRemove"
+                    @tab-click="handleTabClick">
+                    <el-tab-pane v-for="tab in tabs" :key="tab.path" :label="tab.title" :name="tab.path"></el-tab-pane>
+                </el-tabs>
+            </div>
+
             <!-- 主体内容 -->
             <el-main class="main-content">
                 <router-view /> <!-- 嵌套路由的占位符 -->
@@ -65,6 +73,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 export default {
     name: 'Home',
     data() {
@@ -74,6 +84,7 @@ export default {
         };
     },
     computed: {
+        ...mapState('tabs', ['tabs', 'activeTab']),
         // 动态获取用户名
         username() {
             return this.$store.getters.getUserInfo?.nickname || '未知用户';
@@ -100,8 +111,27 @@ export default {
         },
     },
     methods: {
+        ...mapActions('tabs', ['addTab', 'removeTab', 'setActiveTab', 'closeOtherTabs', 'closeAllTabs']),
         // 处理菜单项选择
         handleMenuSelect(path) {
+            this.$router.push(path);
+        },
+        // 处理标签页关闭
+        handleTabRemove(path) {
+            this.removeTab(path); // 从 Vuex 中移除标签页
+            if (this.activeTab === path) {
+                // 如果关闭的是当前激活的标签页
+                const lastTab = this.tabs[this.tabs.length - 1];
+                if (lastTab) {
+                    this.$router.push(lastTab.path); // 跳转到上一个标签页
+                } else {
+                    this.$router.push('/dashboard'); // 如果没有其他标签页，跳转到首页
+                }
+            }
+        },
+        // 处理标签页点击
+        handleTabClick(tab) {
+            const path = tab.props.name; // 获取标签页的路由路径
             this.$router.push(path); // 跳转到对应路由
         },
         // 处理退出登录
@@ -117,10 +147,13 @@ export default {
         },
     },
     watch: {
-        // 监听路由变化，更新激活的菜单项
+        // 监听路由变化，更新激活的菜单项和标签页
         '$route.path': {
             handler(newPath) {
                 this.activeMenu = newPath;
+                const title = this.$route.meta?.title || '未命名';
+                this.addTab({ path: newPath, title });
+                this.setActiveTab(newPath);
             },
             immediate: true,
         },
@@ -136,18 +169,16 @@ html {
 }
 
 .el-main {
-    /* 移除默认的内边距 */
     padding: 0;
-    /* 减去头部高度 */
-    height: calc(100vh - 60px);
+    height: calc(100vh - 120px);
+    /* 减去顶部导航栏和标签页区域的高度 */
     overflow: auto;
-    /* 如果内容超出屏幕，显示滚动条 */
 }
 
 .icon-component {
     width: 1em;
     height: 1em;
-    margin-right: 8px
+    margin-right: 8px;
 }
 
 /* 顶部导航栏样式 */
@@ -158,23 +189,55 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* 添加阴影 */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* 增加内边距 */
     padding: 0 20px;
-    /* 增加与内容部分的间隙 */
-    margin-bottom: 10px;
+}
+
+/* 标签页区域样式 */
+.tabs-container {
+    background-color: #ffffff;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 调整标签页高度和样式 */
+.el-tabs {
+    margin-top: 0;
+}
+
+.el-tabs--card>.el-tabs__header {
+    margin: 0;
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__item {
+    height: 40px;
+    /* 调整标签页高度 */
+    line-height: 40px;
+    /* 调整标签页文字垂直居中 */
+    font-size: 14px;
+    /* 调整标签页文字大小 */
+    padding: 0 20px;
+    /* 调整标签页内边距 */
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__nav {
+    border: none;
+    /* 移除默认边框 */
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+    background-color: #f5f7fa;
+    /* 激活标签页的背景色 */
+    border-bottom-color: #f5f7fa;
+    /* 激活标签页的底部边框颜色 */
 }
 
 /* 主体内容样式 */
 .main-content {
-    /* 增加内边距 */
-    padding: 20px;
-    /* 减去头部高度和间隙 */
-    height: calc(100vh - 70px);
-    /* 如果内容超出屏幕，显示滚动条 */
+    padding: 15px;
+    height: calc(100vh - 120px);
+    /* 减去顶部导航栏和标签页区域的高度 */
     overflow: auto;
-    /* 添加背景色 */
     background-color: #f5f7fa;
 }
 </style>

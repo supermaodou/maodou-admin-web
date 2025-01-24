@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import tabs from './modules/tabs';
 
 // 从 localStorage 中恢复状态
 const storedUserInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
@@ -40,6 +41,10 @@ const store = createStore({
             localStorage.removeItem('permissions');
             localStorage.removeItem('roles');
             localStorage.removeItem('menus');
+            localStorage.removeItem('tabs');
+
+            // 清空 tabs 模块的状态
+            this.commit('tabs/CLOSE_ALL_TABS');
         },
     },
     actions: {
@@ -61,6 +66,9 @@ const store = createStore({
         getRoles: (state) => state.roles,
         // 获取菜单列表
         getMenus: (state) => state.menus,
+    },
+    modules: {
+        tabs,
     },
 });
 
