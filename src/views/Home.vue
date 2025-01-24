@@ -1,10 +1,17 @@
 <template>
     <el-container style="height: 100vh;">
         <!-- 左侧菜单栏 -->
-        <el-aside width="200px" style="background-color: #304156;">
-            <h2 style="color: white; text-align: center; padding: 20px 0;">管理系统</h2>
+        <el-aside :width="isCollapse ? '64px' : '200px'" style="background-color: #304156; transition: width 0.3s;">
+            <!-- 菜单栏顶部标题 -->
+            <div class="menu-header">
+                <el-icon v-if="isCollapse" :size="24" style="color: white;">
+                    <HomeFilled /> <!-- 收起时显示的图标 -->
+                </el-icon>
+                <h2 v-else style="color: white; text-align: center; padding: 20px 0;">管理系统</h2>
+            </div>
+            <!-- 菜单栏 -->
             <el-menu :default-active="activeMenu" background-color="#304156" text-color="#fff"
-                active-text-color="#ffd04b" @select="handleMenuSelect">
+                active-text-color="#ffd04b" @select="handleMenuSelect" :collapse="isCollapse">
                 <!-- 动态生成菜单 -->
                 <template v-for="menu in menus" :key="menu.path">
                     <!-- 一级菜单 -->
@@ -31,6 +38,12 @@
         <el-container>
             <!-- 顶部导航栏 -->
             <el-header class="header">
+                <!-- 展开/收起按钮 -->
+                <div class="collapse-button" @click="toggleCollapse">
+                    <el-icon :size="20" style="color: #304156;">
+                        <component :is="isCollapse ? 'Expand' : 'Fold'" />
+                    </el-icon>
+                </div>
                 <!-- 面包屑 -->
                 <el-breadcrumb separator="/">
                     <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.path">
@@ -81,6 +94,7 @@ export default {
         return {
             activeMenu: this.$route.path, // 当前激活的菜单项
             userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            isCollapse: false, // 是否收起菜单栏
         };
     },
     computed: {
@@ -132,6 +146,7 @@ export default {
         // 处理标签页点击
         handleTabClick(tab) {
             const path = tab.props.name; // 获取标签页的路由路径
+            this.setActiveTab(path); // 调用 Vuex action 更新激活的标签页
             this.$router.push(path); // 跳转到对应路由
         },
         // 处理退出登录
@@ -144,6 +159,10 @@ export default {
                 this.$store.dispatch('logout'); // 调用 Vuex Action 清除用户信息
                 this.$router.push('/login'); // 跳转到登录页面
             });
+        },
+        // 切换菜单栏展开/收起状态
+        toggleCollapse() {
+            this.isCollapse = !this.isCollapse;
         },
     },
     watch: {
@@ -187,10 +206,38 @@ html {
     color: white;
     line-height: 60px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 0 20px;
+}
+
+/* 展开/收起按钮样式 */
+.collapse-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.collapse-button:hover {
+    background-color: #f5f7fa;
+}
+
+/* 面包屑样式 */
+.el-breadcrumb {
+    flex: 1;
+    margin-left: 20px;
+}
+
+/* 菜单栏顶部标题样式 */
+.menu-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid #263445;
 }
 
 /* 标签页区域样式 */
