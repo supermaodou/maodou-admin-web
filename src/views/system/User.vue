@@ -2,8 +2,8 @@
   <div>
     <!-- 顶部：搜索过滤 -->
     <el-card style="margin-bottom: 20px;">
-      <el-form :inline="true" :model="searchForm" class="demo-form-inline" style="display: flex; flex-wrap: wrap;">
-        <el-form-item label="用户名称" style="margin-right: 20px;">
+      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+        <el-form-item label="用户名称">
           <el-input v-model="searchForm.username" placeholder="请输入用户名称"></el-input>
         </el-form-item>
         <el-form-item label="手机号码" style="margin-right: 20px;">
@@ -15,10 +15,8 @@
             <el-option label="禁用" value="0"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item style="margin-right: 20px;">
-          <el-button type="primary"  @click="onSearch"><el-icon><Search /></el-icon>查询</el-button>
-        </el-form-item>
         <el-form-item>
+          <el-button type="primary"  @click="onSearch"><el-icon><Search /></el-icon>查询</el-button>
           <el-button @click="onReset"><el-icon><RefreshRight /></el-icon>重置</el-button>
         </el-form-item>
       </el-form>
@@ -28,8 +26,8 @@
     <el-card>
       <!-- 功能按钮 -->
       <el-row style="margin-bottom: 20px;">
-        <el-col :span="24" style="display: flex; justify-content: flex-start;">
-          <el-button type="primary" @click="openDialog('add')" v-hasPermi="['system:user:add']"><el-icon><Plus /></el-icon>新增</el-button>
+        <el-col :span="24">
+          <el-button type="primary" @click="handleAdd" v-hasPermi="['system:user:add']"><el-icon><Plus /></el-icon>新增</el-button>
           <el-button type="danger" @click="handleBatchDelete" v-hasPermi="['system:user:batchDelete']">批量删除</el-button>
         </el-col>
       </el-row>
@@ -73,7 +71,6 @@
         @current-change="handlePageChange"
         layout="total, sizes, prev, pager, next, jumper"
       ></el-pagination>
-
     </el-card>
 
     <!-- 新增/修改用户弹窗 -->
@@ -142,6 +139,24 @@ export default {
           phone: '13800138001',
           status: '0',
           createTime: '2023-10-02 12:00:00',
+        },
+        {
+          id: 3,
+          username: 'user2',
+          nickname: '用户2',
+          department: '财务部',
+          phone: '13800138002',
+          status: '1',
+          createTime: '2023-10-03 12:00:00',
+        },
+        {
+          id: 4,
+          username: 'user3',
+          nickname: '用户3',
+          department: '运营部',
+          phone: '13800138003',
+          status: '0',
+          createTime: '2023-10-04 12:00:00',
         },
       ],
       // 分页数据
@@ -263,7 +278,30 @@ export default {
 </script>
 
 <style scoped>
-.el-card {
+/* 搜索表单靠左排列 */
+.search-form {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* 搜索表单表单项之间的间距 */
+.search-form .el-form-item {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+/* 功能按钮靠左排列 */
+.action-buttons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   margin-bottom: 20px;
+}
+
+/* 功能按钮之间的间距 */
+.action-buttons .el-button {
+  margin-right: 10px;
 }
 </style>

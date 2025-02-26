@@ -1,25 +1,32 @@
 <template>
     <el-container style="height: 100vh; width: 100vw;">
         <!-- 左侧菜单栏 -->
-        <el-aside width="200px" style="background-color: #304156;">
-            <h2 style="color: white; text-align: center; padding: 20px 0;">管理系统</h2>
+        <el-aside :width="isCollapse ? '64px' : '200px'" style="background-color: #304156; transition: width 0.3s;">
+            <!-- 菜单栏顶部标题 -->
+            <div class="menu-header">
+                <el-icon v-if="isCollapse" :size="24" style="color: white;">
+                    <HomeFilled /> <!-- 收起时显示的图标 -->
+                </el-icon>
+                <h2 v-else style="color: white; text-align: center; padding: 20px 0;">管理系统</h2>
+            </div>
+            <!-- 菜单栏 -->
             <el-menu :default-active="activeMenu" background-color="#304156" text-color="#fff"
-                active-text-color="#ffd04b" @select="handleMenuSelect">
+                active-text-color="#ffd04b" @select="handleMenuSelect" :collapse="isCollapse">
                 <!-- 动态生成菜单 -->
                 <template v-for="menu in menus" :key="menu.path">
                     <!-- 一级菜单 -->
                     <el-menu-item v-if="!menu.children || menu.children.length === 0" :index="menu.path">
-                        <component style="width: 1em; height: 1em; margin-right: 8px" :is="menu.icon" />
+                        <component class="icon-component" :is="menu.icon" />
                         <span>{{ menu.title }}</span>
                     </el-menu-item>
                     <!-- 嵌套菜单 -->
                     <el-sub-menu v-else :index="menu.path">
                         <template #title>
-                            <component style="width: 1em; height: 1em; margin-right: 8px" :is="menu.icon" />
+                            <component class="icon-component" :is="menu.icon" />
                             <span>{{ menu.title }}</span>
                         </template>
                         <el-menu-item v-for="child in menu.children" :key="child.path" :index="child.path">
-                            <component style="width: 1em; height: 1em; margin-right: 8px" :is="child.icon" />
+                            <component class="icon-component" :is="child.icon" />
                             <span>{{ child.title }}</span>
                         </el-menu-item>
                     </el-sub-menu>
@@ -52,8 +59,16 @@
                 </el-dropdown>
             </el-header>
 
+            <!-- 标签页区域 -->
+            <div class="tabs-container">
+                <el-tabs v-model="activeTab" type="card" closable @tab-remove="handleTabRemove"
+                    @tab-click="handleTabClick">
+                    <el-tab-pane v-for="tab in tabs" :key="tab.path" :label="tab.title" :name="tab.path"></el-tab-pane>
+                </el-tabs>
+            </div>
+
             <!-- 主体内容 -->
-            <el-main>
+            <el-main class="main-content">
                 <router-view /> <!-- 嵌套路由的占位符 -->
             </el-main>
 
@@ -66,15 +81,19 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 export default {
     name: 'Home',
     data() {
         return {
             activeMenu: this.$route.path, // 当前激活的菜单项
             userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            isCollapse: false, // 是否收起菜单栏
         };
     },
     computed: {
+        ...mapState('tabs', ['tabs', 'activeTab']),
         // 动态获取用户名
         username() {
             return this.$store.getters.getUserInfo?.nickname || '未知用户';
@@ -101,8 +120,28 @@ export default {
         },
     },
     methods: {
+        ...mapActions('tabs', ['addTab', 'removeTab', 'setActiveTab', 'closeOtherTabs', 'closeAllTabs']),
         // 处理菜单项选择
         handleMenuSelect(path) {
+            this.$router.push(path);
+        },
+        // 处理标签页关闭
+        handleTabRemove(path) {
+            this.removeTab(path); // 从 Vuex 中移除标签页
+            if (this.activeTab === path) {
+                // 如果关闭的是当前激活的标签页
+                const lastTab = this.tabs[this.tabs.length - 1];
+                if (lastTab) {
+                    this.$router.push(lastTab.path); // 跳转到上一个标签页
+                } else {
+                    this.$router.push('/dashboard'); // 如果没有其他标签页，跳转到首页
+                }
+            }
+        },
+        // 处理标签页点击
+        handleTabClick(tab) {
+            const path = tab.props.name; // 获取标签页的路由路径
+            this.setActiveTab(path); // 调用 Vuex action 更新激活的标签页
             this.$router.push(path); // 跳转到对应路由
         },
         // 处理退出登录
@@ -116,12 +155,19 @@ export default {
                 this.$router.push('/login'); // 跳转到登录页面
             });
         },
+        // 切换菜单栏展开/收起状态
+        toggleCollapse() {
+            this.isCollapse = !this.isCollapse;
+        },
     },
     watch: {
-        // 监听路由变化，更新激活的菜单项
+        // 监听路由变化，更新激活的菜单项和标签页
         '$route.path': {
             handler(newPath) {
                 this.activeMenu = newPath;
+                const title = this.$route.meta?.title || '未命名';
+                this.addTab({ path: newPath, title });
+                this.setActiveTab(newPath);
             },
             immediate: true,
         },
