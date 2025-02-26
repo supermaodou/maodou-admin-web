@@ -1,5 +1,5 @@
 <template>
-    <el-container style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <el-container style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
         <el-card style="width: 400px;">
             <h2 style="text-align: center;">登录</h2>
             <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">

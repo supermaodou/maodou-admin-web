@@ -1,5 +1,5 @@
 <template>
-    <el-container style="height: 100vh;">
+    <el-container style="height: 100vh; width: 100vw;">
         <!-- 左侧菜单栏 -->
         <el-aside width="200px" style="background-color: #304156;">
             <h2 style="color: white; text-align: center; padding: 20px 0;">管理系统</h2>
@@ -28,19 +28,19 @@
         </el-aside>
 
         <!-- 右侧内容区域 -->
-        <el-container>
+        <el-container style="width: calc(100vw - 200px);">
             <!-- 头部 -->
             <el-header
-                style="background-color: #FFFFFF; color: white; line-height: 60px; display: flex; justify-content: space-between; align-items: center;">
+                style="background-color: #FFFFFF; color: #304156; line-height: 60px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
                 <!-- 面包屑 -->
-                <el-breadcrumb separator="/">
+                <el-breadcrumb separator="/" style="margin-left: 20px;">
                     <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.path">
                         {{ item.title }}
                     </el-breadcrumb-item>
                 </el-breadcrumb>
                 <!-- 用户信息 -->
                 <el-dropdown>
-                    <div style="display: flex; align-items: center; cursor: pointer;">
+                    <div style="display: flex; align-items: center; cursor: pointer; margin-right: 20px;">
                         <el-avatar :size="40" :src="userAvatar" style="margin-right: 10px;"></el-avatar>
                         <span>{{ username }}</span>
                     </div>
@@ -134,14 +134,32 @@ body,
 html {
     margin: 0;
     padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+#app {
+    height: 100%;
+}
+
+.el-container {
+    height: 100%;
+    width: 100%;
+}
+
+.el-aside {
+    height: 100%;
+    overflow-y: auto;
 }
 
 .el-main {
-    padding: 0;
-    /* 移除默认的内边距 */
-    height: calc(100vh - 60px);
-    /* 减去头部高度 */
-    overflow: auto;
-    /* 如果内容超出屏幕，显示滚动条 */
+    padding: 20px;
+    height: calc(100vh - 120px); /* 减去头部和底部的高度(各60px) */
+    overflow-y: auto;
+}
+
+.el-header, .el-footer {
+    height: 60px;
+    padding: 0 20px;
 }
 </style>

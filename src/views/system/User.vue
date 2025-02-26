@@ -2,21 +2,23 @@
   <div>
     <!-- 顶部：搜索过滤 -->
     <el-card style="margin-bottom: 20px;">
-      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-        <el-form-item label="用户名称">
+      <el-form :inline="true" :model="searchForm" class="demo-form-inline" style="display: flex; flex-wrap: wrap;">
+        <el-form-item label="用户名称" style="margin-right: 20px;">
           <el-input v-model="searchForm.username" placeholder="请输入用户名称"></el-input>
         </el-form-item>
-        <el-form-item label="手机号码">
+        <el-form-item label="手机号码" style="margin-right: 20px;">
           <el-input v-model="searchForm.phone" placeholder="请输入手机号码"></el-input>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="状态" style="margin-right: 20px;">
           <el-select v-model="searchForm.status" placeholder="请选择状态" style="width: 200px">
             <el-option label="启用" value="1"></el-option>
             <el-option label="禁用" value="0"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="margin-right: 20px;">
           <el-button type="primary"  @click="onSearch"><el-icon><Search /></el-icon>查询</el-button>
+        </el-form-item>
+        <el-form-item>
           <el-button @click="onReset"><el-icon><RefreshRight /></el-icon>重置</el-button>
         </el-form-item>
       </el-form>
@@ -26,8 +28,8 @@
     <el-card>
       <!-- 功能按钮 -->
       <el-row style="margin-bottom: 20px;">
-        <el-col :span="24">
-          <el-button type="primary" @click="handleAdd" v-hasPermi="['system:user:add']"><el-icon><Plus /></el-icon>新增</el-button>
+        <el-col :span="24" style="display: flex; justify-content: flex-start;">
+          <el-button type="primary" @click="openDialog('add')" v-hasPermi="['system:user:add']"><el-icon><Plus /></el-icon>新增</el-button>
           <el-button type="danger" @click="handleBatchDelete" v-hasPermi="['system:user:batchDelete']">批量删除</el-button>
         </el-col>
       </el-row>
@@ -54,15 +56,8 @@
         <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="handleEdit(scope.row)" v-hasPermi="['system:user:edit']"><el-icon><EditPen /></el-icon>修改</el-button>
+            <el-button link type="primary" size="small" @click="openDialog('edit', scope.row)" v-hasPermi="['system:user:edit']"><el-icon><EditPen /></el-icon>修改</el-button>
             <el-button link type="danger" size="small" @click="handleDelete(scope.row)" v-hasPermi="['system:user:delete']"><el-icon><Delete /></el-icon>删除</el-button>
-            <!-- <el-dropdown size="small">
-              <el-button size="small" type="text">更多</el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="handleResetPwd">重置密码</el-dropdown-item>
-                <el-dropdown-item command="handleAuthRole">分配角色</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown> -->
           </template>
         </el-table-column>
       </el-table>
@@ -80,6 +75,40 @@
       ></el-pagination>
 
     </el-card>
+
+    <!-- 新增/修改用户弹窗 -->
+    <el-dialog :title="dialogTitle" v-model="dialogVisible">
+      <el-form :model="form">
+        <el-form-item label="用户编号">
+          <el-input v-model="form.id" :disabled="isEdit"></el-input>
+        </el-form-item>
+        <el-form-item label="用户名称">
+          <el-input v-model="form.username"></el-input>
+        </el-form-item>
+        <el-form-item label="用户昵称">
+          <el-input v-model="form.nickname"></el-input>
+        </el-form-item>
+        <el-form-item label="部门">
+          <el-input v-model="form.department"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号码">
+          <el-input v-model="form.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="form.status">
+            <el-option label="启用" value="1"></el-option>
+            <el-option label="禁用" value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-input v-model="form.createTime" :disabled="isEdit"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleSave">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -123,6 +152,19 @@ export default {
       },
       // 选中的用户
       selectedUsers: [],
+      // 弹窗相关数据
+      dialogVisible: false,
+      dialogTitle: '',
+      isEdit: false,
+      form: {
+        id: '',
+        username: '',
+        nickname: '',
+        department: '',
+        phone: '',
+        status: '',
+        createTime: '',
+      },
     };
   },
   methods: {
@@ -139,10 +181,37 @@ export default {
         status: '',
       };
     },
-    // 新增用户
-    handleAdd() {
-      this.$message.success('点击了新增按钮');
-      // 这里可以跳转到新增页面或打开弹窗
+    // 打开弹窗
+    openDialog(type, row = {}) {
+      this.dialogVisible = true;
+      if (type === 'add') {
+        this.dialogTitle = '新增用户';
+        this.isEdit = false;
+        this.form = {
+          id: '',
+          username: '',
+          nickname: '',
+          department: '',
+          phone: '',
+          status: '',
+          createTime: '',
+        };
+      } else if (type === 'edit') {
+        this.dialogTitle = '修改用户';
+        this.isEdit = true;
+        this.form = { ...row };
+      }
+    },
+    // 保存用户
+    handleSave() {
+      if (this.isEdit) {
+        this.$message.success('修改成功');
+        // 这里可以调用接口保存修改的数据
+      } else {
+        this.$message.success('新增成功');
+        // 这里可以调用接口保存新增的数据
+      }
+      this.dialogVisible = false;
     },
     // 批量删除
     handleBatchDelete() {
@@ -155,14 +224,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
+        this.selectedUsers.forEach(user => {
+          // 这里可以调用接口删除数据
+          console.log(`删除用户：${user.username}`);
+        });
         this.$message.success('删除成功');
-        // 这里可以调用接口删除数据
+        // 清空选中的用户
+        this.selectedUsers = [];
       });
-    },
-    // 编辑用户
-    handleEdit(row) {
-      this.$message.success(`编辑用户：${row.username}`);
-      // 这里可以跳转到编辑页面或打开弹窗
     },
     // 删除用户
     handleDelete(row) {
