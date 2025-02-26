@@ -2,8 +2,8 @@
   <div>
     <!-- 顶部：搜索过滤 -->
     <el-card style="margin-bottom: 20px;">
-      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-        <el-form-item label="用户名称">
+      <el-form :inline="true" :model="searchForm" class="demo-form-inline" style="display: flex; flex-wrap: wrap;">
+        <el-form-item label="用户名称" style="margin-right: 20px;">
           <el-input v-model="searchForm.username" placeholder="请输入用户名称"></el-input>
         </el-form-item>
         <el-form-item label="手机号码" style="margin-right: 20px;">
@@ -15,8 +15,10 @@
             <el-option label="禁用" value="0"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="margin-right: 20px;">
           <el-button type="primary"  @click="onSearch"><el-icon><Search /></el-icon>查询</el-button>
+        </el-form-item>
+        <el-form-item>
           <el-button @click="onReset"><el-icon><RefreshRight /></el-icon>重置</el-button>
         </el-form-item>
       </el-form>
@@ -26,8 +28,8 @@
     <el-card>
       <!-- 功能按钮 -->
       <el-row style="margin-bottom: 20px;">
-        <el-col :span="24">
-          <el-button type="primary" @click="handleAdd" v-hasPermi="['system:user:add']"><el-icon><Plus /></el-icon>新增</el-button>
+        <el-col :span="24" style="display: flex; justify-content: flex-start;">
+          <el-button type="primary" @click="openDialog('add')" v-hasPermi="['system:user:add']"><el-icon><Plus /></el-icon>新增</el-button>
           <el-button type="danger" @click="handleBatchDelete" v-hasPermi="['system:user:batchDelete']">批量删除</el-button>
         </el-col>
       </el-row>
