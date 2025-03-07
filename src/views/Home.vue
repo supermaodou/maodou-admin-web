@@ -36,18 +36,23 @@
 
         <!-- 右侧内容区域 -->
         <el-container style="width: calc(100vw - 200px);">
-            <!-- 头部 -->
-            <el-header
-                style="background-color: #FFFFFF; color: #304156; line-height: 60px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
+            <!-- 顶部导航栏 -->
+            <el-header class="header">
+                <!-- 展开/收起按钮 -->
+                <div class="collapse-button" @click="toggleCollapse">
+                    <el-icon :size="20" style="color: #304156;">
+                        <component :is="isCollapse ? 'Expand' : 'Fold'" />
+                    </el-icon>
+                </div>
                 <!-- 面包屑 -->
-                <el-breadcrumb separator="/" style="margin-left: 20px;">
+                <el-breadcrumb separator="/">
                     <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.path">
                         {{ item.title }}
                     </el-breadcrumb-item>
                 </el-breadcrumb>
                 <!-- 用户信息 -->
                 <el-dropdown>
-                    <div style="display: flex; align-items: center; cursor: pointer; margin-right: 20px;">
+                    <div style="display: flex; align-items: center; cursor: pointer;">
                         <el-avatar :size="40" :src="userAvatar" style="margin-right: 10px;"></el-avatar>
                         <span>{{ username }}</span>
                     </div>
@@ -200,12 +205,107 @@ html {
 
 .el-main {
     padding: 20px;
-    height: calc(100vh - 120px); /* 减去头部和底部的高度(各60px) */
+    height: calc(100vh - 120px); 
+    /* 减去头部和底部的高度(各60px) */
     overflow-y: auto;
 }
 
-.el-header, .el-footer {
-    height: 60px;
+.icon-component {
+    width: 1em;
+    height: 1em;
+    margin-right: 8px;
+}
+
+/* 顶部导航栏样式 */
+.header {
+    background-color: #FFFFFF;
+    color: white;
+    line-height: 60px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 0 20px;
 }
+
+/* 展开/收起按钮样式 */
+.collapse-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.collapse-button:hover {
+    background-color: #f5f7fa;
+}
+
+/* 面包屑样式 */
+.el-breadcrumb {
+    flex: 1;
+    margin-left: 20px;
+}
+
+/* 菜单栏顶部标题样式 */
+.menu-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid #263445;
+}
+
+/* 标签页区域样式 */
+.tabs-container {
+    background-color: #ffffff;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 调整标签页高度和样式 */
+.el-tabs {
+    margin-top: 0;
+}
+
+.el-tabs--card>.el-tabs__header {
+    margin: 0;
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__item {
+    height: 40px;
+    /* 调整标签页高度 */
+    line-height: 40px;
+    /* 调整标签页文字垂直居中 */
+    font-size: 14px;
+    /* 调整标签页文字大小 */
+    padding: 0 20px;
+    /* 调整标签页内边距 */
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__nav {
+    border: none;
+    /* 移除默认边框 */
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+    background-color: #f5f7fa;
+    /* 激活标签页的背景色 */
+    border-bottom-color: #f5f7fa;
+    /* 激活标签页的底部边框颜色 */
+}
+
+/* 主体内容样式 */
+.main-content {
+    padding: 15px;
+    height: calc(100vh - 120px);
+    /* 减去顶部导航栏和标签页区域的高度 */
+    overflow: auto;
+    background-color: #f5f7fa;
+}
+
+/* .el-header, .el-footer {
+    height: 60px;
+    padding: 0 20px;
+} */
 </style>
