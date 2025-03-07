@@ -36,25 +36,25 @@
 
       <!-- 用户列表 -->
       <el-table
-        :data="userList"
+        :data="tableData"
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" fixed></el-table-column>
+        <el-table-column type="selection" width="60" fixed></el-table-column>
         <el-table-column prop="id" label="用户编号" width="100"></el-table-column>
-        <el-table-column prop="username" label="用户名称" width="120"></el-table-column>
-        <el-table-column prop="nickname" label="用户昵称" width="120"></el-table-column>
-        <el-table-column prop="department" label="部门" width="120"></el-table-column>
-        <el-table-column prop="phone" label="手机号码" width="120"></el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="username" label="用户名称" width="150"></el-table-column>
+        <el-table-column prop="nickname" label="用户昵称" width="150"></el-table-column>
+        <el-table-column prop="department" label="部门" width="150"></el-table-column>
+        <el-table-column prop="phone" label="手机号码" width="150"></el-table-column>
+        <el-table-column prop="status" label="状态" width="120">
           <template #default="scope">
             <el-tag :type="scope.row.status === '1' ? 'success' : 'danger'">
               {{ scope.row.status === '1' ? '启用' : '禁用' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
-        <el-table-column label="操作" min-width="150">
+        <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+        <el-table-column label="操作" min-width="120">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="openDialog('edit', scope.row)" v-hasPermi="['system:user:edit']"><el-icon><EditPen /></el-icon>修改</el-button>
             <el-button link type="danger" size="small" @click="handleDelete(scope.row)" v-hasPermi="['system:user:delete']"><el-icon><Delete /></el-icon>删除</el-button>
@@ -125,7 +125,7 @@ export default {
         status: '',
       },
       // 用户列表数据
-      userList: [
+      tableData: [
         {
           id: 1,
           username: 'admin',
@@ -159,6 +159,60 @@ export default {
           nickname: '用户3',
           department: '运营部',
           phone: '13800138003',
+          status: '0',
+          createTime: '2023-10-04 12:00:00',
+        },
+        {
+          id: 5,
+          username: 'user4',
+          nickname: '用户4',
+          department: '市场部',
+          phone: '13800138004',
+          status: '0',
+          createTime: '2023-10-02 12:00:00',
+        },
+        {
+          id: 6,
+          username: 'user5',
+          nickname: '用户5',
+          department: '市场部',
+          phone: '13800138005',
+          status: '0',
+          createTime: '2023-10-02 12:00:00',
+        },
+        {
+          id: 7,
+          username: 'user6',
+          nickname: '用户6',
+          department: '财务部',
+          phone: '13800138006',
+          status: '1',
+          createTime: '2023-10-03 12:00:00',
+        },
+        {
+          id: 8,
+          username: 'user7',
+          nickname: '用户7',
+          department: '运营部',
+          phone: '13800138007',
+          status: '0',
+          createTime: '2023-10-04 12:00:00',
+        },
+        {
+          id: 9,
+          username: 'user8',
+          nickname: '用户8',
+          department: '财务部',
+          phone: '13800138008',
+          status: '1',
+          createTime: '2023-10-03 12:00:00',
+        },
+        {
+          id: 10,
+          username: 'user9',
+          nickname: '用户9',
+          department: '运营部',
+          phone: '13800138009',
           status: '0',
           createTime: '2023-10-04 12:00:00',
         },
