@@ -35,7 +35,7 @@
         </el-aside>
 
         <!-- 右侧内容区域 -->
-        <el-container style="width: calc(100vw - 200px);">
+        <el-container :style="{ width: isCollapse ? 'calc(100vw - 64px)' : 'calc(100vw - 200px)' }">
             <!-- 顶部导航栏 -->
             <el-header class="header">
                 <!-- 展开/收起按钮 -->
@@ -78,9 +78,9 @@
             </el-main>
 
             <!-- 底部 -->
-            <el-footer style="background-color: #FFFFFF; color: #304156; text-align: center; line-height: 60px;">
+            <!-- <el-footer style="background-color: #FFFFFF; color: #304156; text-align: center; line-height: 60px;">
                 版权所有 © 2023 管理系统
-            </el-footer>
+            </el-footer> -->
         </el-container>
     </el-container>
 </template>
@@ -205,9 +205,9 @@ html {
 
 .el-main {
     padding: 20px;
-    height: calc(100vh - 120px); 
-    /* 减去头部和底部的高度(各60px) */
+    height: calc(100vh - 120px); /* 调整高度以填充满底部固定区域 */
     overflow-y: auto;
+    box-sizing: border-box; /* 确保padding不会增加元素实际尺寸 */
 }
 
 .icon-component {
@@ -219,12 +219,13 @@ html {
 /* 顶部导航栏样式 */
 .header {
     background-color: #FFFFFF;
-    color: white;
+    color: #303133;
     line-height: 60px;
     display: flex;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 0 20px;
+    height: 60px; /* 明确定义高度 */
 }
 
 /* 展开/收起按钮样式 */
@@ -232,9 +233,8 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60px;
     cursor: pointer;
-    margin-right: 20px;
+    padding: 0 10px;
 }
 
 .collapse-button:hover {
@@ -261,11 +261,14 @@ html {
     background-color: #ffffff;
     padding: 0 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 40px; /* 明确定义高度 */
+    width: 100%;
 }
 
 /* 调整标签页高度和样式 */
 .el-tabs {
     margin-top: 0;
+    height: 100%;
 }
 
 .el-tabs--card>.el-tabs__header {
@@ -273,39 +276,39 @@ html {
 }
 
 .el-tabs--card>.el-tabs__header .el-tabs__item {
-    height: 40px;
-    /* 调整标签页高度 */
-    line-height: 40px;
-    /* 调整标签页文字垂直居中 */
-    font-size: 14px;
-    /* 调整标签页文字大小 */
-    padding: 0 20px;
-    /* 调整标签页内边距 */
+    height: 40px; /* 调整标签页高度 */
+    line-height: 40px; /* 调整标签页文字垂直居中 */
+    font-size: 14px; /* 调整标签页文字大小 */
+    padding: 0 20px; /* 调整标签页内边距 */
 }
 
 .el-tabs--card>.el-tabs__header .el-tabs__nav {
-    border: none;
-    /* 移除默认边框 */
+    border: none; /* 移除默认边框 */
 }
 
 .el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
-    background-color: #f5f7fa;
-    /* 激活标签页的背景色 */
-    border-bottom-color: #f5f7fa;
-    /* 激活标签页的底部边框颜色 */
+    background-color: #f5f7fa; /* 激活标签页的背景色 */
+    border-bottom-color: #f5f7fa; /* 激活标签页的底部边框颜色 */
 }
 
 /* 主体内容样式 */
 .main-content {
     padding: 15px;
-    height: calc(100vh - 120px);
-    /* 减去顶部导航栏和标签页区域的高度 */
     overflow: auto;
     background-color: #f5f7fa;
+    height: calc(100vh - 100px); /* 调整高度计算: 100vh - 顶部导航(60px) - 标签页(40px) */
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* .el-header, .el-footer {
-    height: 60px;
-    padding: 0 20px;
-} */
+/* 确保表格显示充满整个容器 */
+.el-table {
+    width: 100% !important;
+}
+
+/* 确保el-card在main区域中也能充满空间 */
+.main-content .el-card {
+    width: 100%;
+    margin-bottom: 20px;
+}
 </style>

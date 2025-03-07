@@ -25,7 +25,7 @@
     </el-card>
 
     <!-- 功能按钮和用户列表 -->
-    <el-card>
+    <el-card class="table-card">
       <!-- 功能按钮 -->
       <el-row style="margin-bottom: 20px;">
         <el-col :span="24" style="display: flex; justify-content: flex-start;">
@@ -40,7 +40,7 @@
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column type="selection" width="55" fixed></el-table-column>
         <el-table-column prop="id" label="用户编号" width="100"></el-table-column>
         <el-table-column prop="username" label="用户名称" width="120"></el-table-column>
         <el-table-column prop="nickname" label="用户昵称" width="120"></el-table-column>
@@ -54,7 +54,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
-        <el-table-column label="操作" width="150">
+        <el-table-column label="操作" min-width="150">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="openDialog('edit', scope.row)" v-hasPermi="['system:user:edit']"><el-icon><EditPen /></el-icon>修改</el-button>
             <el-button link type="danger" size="small" @click="handleDelete(scope.row)" v-hasPermi="['system:user:delete']"><el-icon><Delete /></el-icon>删除</el-button>
@@ -103,10 +103,12 @@
           <el-input v-model="form.createTime" :disabled="isEdit"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSave">保存</el-button>
-      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleSave">保存</el-button>
+        </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -165,7 +167,7 @@ export default {
       pagination: {
         currentPage: 1,
         pageSize: 10,
-        total: 2,
+        total: 4,
       },
       // 选中的用户
       selectedUsers: [],
@@ -305,5 +307,25 @@ export default {
 /* 功能按钮之间的间距 */
 .action-buttons .el-button {
   margin-right: 10px;
+}
+
+/* 表格卡片样式，确保占满区域 */
+.table-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 表格卡片内容区域，使其填充满父容器 */
+.table-card .el-card__body {
+  flex: 1;
+  padding: 20px;
+  overflow: auto;
+}
+
+/* 确保表格宽度100% */
+.el-table {
+  width: 100% !important;
 }
 </style>
