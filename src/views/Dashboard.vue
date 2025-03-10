@@ -89,16 +89,9 @@
 <script>
 import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
-import { User, ShoppingCart, Money, UserFilled } from '@element-plus/icons-vue'
 
 export default {
   name: 'Dashboard',
-  components: {
-    User,
-    ShoppingCart,
-    Money,
-    UserFilled
-  },
   setup() {
     const salesChart = ref(null)
     const userPieChart = ref(null)
