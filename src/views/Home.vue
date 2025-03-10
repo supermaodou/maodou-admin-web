@@ -234,7 +234,7 @@ html {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    padding: 0 10px;
+    /* padding: 0 10px; */
 }
 
 .collapse-button:hover {

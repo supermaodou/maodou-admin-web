@@ -1,32 +1,53 @@
 <template>
-    <el-container style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
-        <el-card style="width: 400px;">
-            <h2 style="text-align: center;">登录</h2>
-            <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
-                <el-form-item label="用户名" prop="username">
-                    <el-input v-model="loginForm.username" placeholder="请输入用户名"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="password">
-                    <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="handleLogin" style="width: 100%;">登录</el-button>
-                </el-form-item>
-            </el-form>
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-title">
+        <h2>后台管理系统</h2>
+        <p>Maodou Admin</p>
+      </div>
+      <el-form :model="loginForm" :rules="rules" ref="loginForm" label-position="top">
+        <el-form-item prop="username">
+          <el-input 
+            v-model="loginForm.username" 
+            placeholder="请输入用户名"
+            prefix-icon="User"
+            size="large"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input 
+            type="password" 
+            v-model="loginForm.password" 
+            placeholder="请输入密码"
+            prefix-icon="Lock"
+            size="large"
+            @keyup.enter="handleLogin"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleLogin" size="large" style="width: 100%;">登 录</el-button>
+        </el-form-item>
+      </el-form>
 
-            <!-- 测试账号提示 -->
-            <div style="text-align: center; margin-top: 20px;">
-                <p>测试账号：</p>
-                <p>1. 管理员账号：admin / 1</p>
-                <p>2. 普通用户账号：user / 1</p>
-            </div>
-        </el-card>
-    </el-container>
+      <!-- 测试账号提示 -->
+      <div class="test-account">
+        <p>测试账号：</p>
+        <p>管理员账号：admin / 1</p>
+        <p>普通用户账号：user / 1</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import { User, Lock } from '@element-plus/icons-vue'
+
 export default {
-    name: 'Login',
+  name: 'Login',
+  components: {
+    User,
+    Lock
+  },
     data() {
         return {
             loginForm: {
@@ -55,7 +76,20 @@ export default {
                         userInfo = {
                             username: 'admin',
                             nickname: '管理员',
-                            permissions: ['system:user:add', 'system:user:edit', 'system:user:delete', 'system:user:batchDelete'],
+                            permissions: [
+                                'system:user:add',
+                                'system:user:edit',
+                                'system:user:delete',
+                                'system:user:batchDelete',
+                                'system:role:add',
+                                'system:role:batchDelete',
+                                'system:role:edit',
+                                'system:role:permission',
+                                'system:role:delete',
+                                'system:menu:add',
+                                'system:menu:edit',
+                                'system:menu:delete'
+                            ],
                             roles: ['admin'],
                         };
                     }
@@ -91,7 +125,81 @@ export default {
 </script>
 
 <style scoped>
-.el-card {
-    padding: 20px;
+.login-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('/src/assets/login-bg.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(3px);
+}
+
+.login-box {
+  position: relative;
+  width: 400px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-title h2 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+.login-title p {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.el-form-item {
+  margin-bottom: 25px;
+}
+
+.el-input {
+  --el-input-hover-border: var(--el-color-primary);
+}
+
+.test-account {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px dashed #ddd;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.test-account p {
+  margin: 5px 0;
+}
+
+:deep(.el-input__wrapper) {
+  box-shadow: 0 0 0 1px #dcdfe6 inset;
+}
+
+:deep(.el-input__wrapper:hover) {
+  box-shadow: 0 0 0 1px var(--el-color-primary) inset;
 }
 </style>
