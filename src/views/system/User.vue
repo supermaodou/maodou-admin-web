@@ -114,6 +114,8 @@
 </template>
 
 <script>
+import { userApi } from '@/api'
+
 export default {
   name: 'User',
   data() {
@@ -125,103 +127,12 @@ export default {
         status: '',
       },
       // 用户列表数据
-      tableData: [
-        {
-          id: 1,
-          username: 'admin',
-          nickname: '管理员',
-          department: '技术部',
-          phone: '13800138000',
-          status: '1',
-          createTime: '2023-10-01 12:00:00',
-        },
-        {
-          id: 2,
-          username: 'user1',
-          nickname: '用户1',
-          department: '市场部',
-          phone: '13800138001',
-          status: '0',
-          createTime: '2023-10-02 12:00:00',
-        },
-        {
-          id: 3,
-          username: 'user2',
-          nickname: '用户2',
-          department: '财务部',
-          phone: '13800138002',
-          status: '1',
-          createTime: '2023-10-03 12:00:00',
-        },
-        {
-          id: 4,
-          username: 'user3',
-          nickname: '用户3',
-          department: '运营部',
-          phone: '13800138003',
-          status: '0',
-          createTime: '2023-10-04 12:00:00',
-        },
-        {
-          id: 5,
-          username: 'user4',
-          nickname: '用户4',
-          department: '市场部',
-          phone: '13800138004',
-          status: '0',
-          createTime: '2023-10-02 12:00:00',
-        },
-        {
-          id: 6,
-          username: 'user5',
-          nickname: '用户5',
-          department: '市场部',
-          phone: '13800138005',
-          status: '0',
-          createTime: '2023-10-02 12:00:00',
-        },
-        {
-          id: 7,
-          username: 'user6',
-          nickname: '用户6',
-          department: '财务部',
-          phone: '13800138006',
-          status: '1',
-          createTime: '2023-10-03 12:00:00',
-        },
-        {
-          id: 8,
-          username: 'user7',
-          nickname: '用户7',
-          department: '运营部',
-          phone: '13800138007',
-          status: '0',
-          createTime: '2023-10-04 12:00:00',
-        },
-        {
-          id: 9,
-          username: 'user8',
-          nickname: '用户8',
-          department: '财务部',
-          phone: '13800138008',
-          status: '1',
-          createTime: '2023-10-03 12:00:00',
-        },
-        {
-          id: 10,
-          username: 'user9',
-          nickname: '用户9',
-          department: '运营部',
-          phone: '13800138009',
-          status: '0',
-          createTime: '2023-10-04 12:00:00',
-        },
-      ],
-      // 分页数据
+      tableData: [],
+      // 修改分页数据
       pagination: {
         currentPage: 1,
         pageSize: 10,
-        total: 4,
+        total: 0,
       },
       // 选中的用户
       selectedUsers: [],
@@ -240,19 +151,40 @@ export default {
       },
     };
   },
+  // 添加生命周期钩子
+  created() {
+    this.fetchUserList()
+  },
   methods: {
+    // 获取用户列表数据
+    async fetchUserList() {
+      try {
+        const params = {
+          page: this.pagination.currentPage,
+          pageSize: this.pagination.pageSize,
+          ...this.searchForm
+        }
+        const res = await userApi.getUserList(params)
+        this.tableData = res.data.list || []
+        this.pagination.total = res.data.total || 0
+      } catch (error) {
+        console.error('获取用户列表失败：', error)
+        this.$message.error('获取用户列表失败')
+      }
+    },
     // 查询
-    onSearch() {
-      console.log('查询条件：', this.searchForm);
-      // 这里可以调用接口获取数据
+    async onSearch() {
+      this.pagination.currentPage = 1
+      await this.fetchUserList()
     },
     // 重置
-    onReset() {
+    async onReset() {
       this.searchForm = {
         username: '',
         phone: '',
         status: '',
-      };
+      }
+      await this.onSearch()
     },
     // 打开弹窗
     openDialog(type, row = {}) {
@@ -322,17 +254,17 @@ export default {
       this.selectedUsers = selection;
     },
     // 分页大小改变
-    handleSizeChange(size) {
-      this.pagination.pageSize = size;
-      // 这里可以调用接口获取分页数据
+    async handleSizeChange(size) {
+      this.pagination.pageSize = size
+      await this.fetchUserList()
     },
     // 分页改变
-    handlePageChange(currentPage) {
-      this.pagination.currentPage = currentPage;
-      // 这里可以调用接口获取分页数据
+    async handlePageChange(currentPage) {
+      this.pagination.currentPage = currentPage
+      await this.fetchUserList()
     },
   },
-};
+}
 </script>
 
 <style scoped>

@@ -144,6 +144,8 @@
 </template>
 
 <script>
+import { menuApi } from '@/api'
+
 export default {
   name: 'Menu',
   data() {
@@ -155,78 +157,7 @@ export default {
         status: '',
       },
       // 菜单表格数据（树形结构）
-      tableData: [
-        {
-          id: 1,
-          menuName: '系统管理',
-          icon: 'Setting',
-          orderNum: 1,
-          permission: '',
-          path: '/system',
-          component: '',
-          menuType: 'M',
-          status: '1',
-          children: [
-            {
-              id: 11,
-              menuName: '用户管理',
-              icon: 'User',
-              orderNum: 1,
-              permission: '',
-              path: 'user',
-              component: 'system/User',
-              menuType: 'C',
-              status: '1',
-              children: [
-                {
-                  id: 111,
-                  menuName: '用户查询',
-                  icon: '',
-                  orderNum: 1,
-                  permission: 'system:user:query',
-                  path: '',
-                  component: '',
-                  menuType: 'F',
-                  status: '1',
-                },
-                {
-                  id: 112,
-                  menuName: '用户新增',
-                  icon: '',
-                  orderNum: 2,
-                  permission: 'system:user:add',
-                  path: '',
-                  component: '',
-                  menuType: 'F',
-                  status: '1',
-                },
-              ],
-            },
-            {
-              id: 12,
-              menuName: '角色管理',
-              icon: 'UserFilled',
-              orderNum: 2,
-              permission: '',
-              path: 'role',
-              component: 'system/Role',
-              menuType: 'C',
-              status: '1',
-            },
-          ],
-        },
-        {
-          id: 2,
-          menuName: '系统监控',
-          icon: 'Monitor',
-          orderNum: 2,
-          permission: '',
-          path: '/monitor',
-          component: '',
-          menuType: 'M',
-          status: '1',
-        },
-      ],
+      tableData: [],
       // 弹窗相关数据
       dialogVisible: false,
       dialogTitle: '',
@@ -248,19 +179,38 @@ export default {
       isExpandAll: false, // 添加展开/收起状态
     };
   },
+  created() {
+    this.fetchMenuList()
+  },
   methods: {
+    async fetchMenuList() {
+      try {
+        const params = {
+          page: 1,
+          pageSize: 100,  // 由于是树形结构，这里设置较大的数值
+          ...this.searchForm
+        }
+        const res = await menuApi.getList(params)
+        this.tableData = res.data.list || []
+          // 获取数据后更新菜单树
+        this.updateMenuTreeData()
+      } catch (error) {
+        console.error('获取菜单列表失败：', error)
+        this.$message.error('获取菜单列表失败')
+      }
+    },
     // 查询
-    onSearch() {
-      console.log('查询条件：', this.searchForm);
-      // 这里可以调用接口获取数据
+    async onSearch() {
+      await this.fetchMenuList()
     },
     // 重置
-    onReset() {
+    async onReset() {
       this.searchForm = {
         menuName: '',
         permission: '',
         status: '',
-      };
+      }
+      await this.fetchMenuList()
     },
     // 打开弹窗
     openDialog(type, row = {}) {

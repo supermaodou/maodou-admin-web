@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "username": "admin",
+        "nickname": "管理员",
+        "department": "技术部",
+        "phone": "13800138000",
+        "status": "1",
+        "createTime": "2023-10-01 12:00:00"
+    },
+    {
+        "id": 2,
+        "username": "user1",
+        "nickname": "用户1",
+        "department": "市场部",
+        "phone": "13800138001",
+        "status": "0",
+        "createTime": "2023-10-02 12:00:00"
+    },
+    {
+        "id": 3,
+        "username": "user2",
+        "nickname": "用户2",
+        "department": "财务部",
+        "phone": "13800138002",
+        "status": "1",
+        "createTime": "2023-10-03 12:00:00"
+    },
+    {
+        "id": 4,
+        "username": "user3",
+        "nickname": "用户3",
+        "department": "运营部",
+        "phone": "13800138003",
+        "status": "0",
+        "createTime": "2023-10-04 12:00:00"
+    },
+    {
+        "id": 5,
+        "username": "user4",
+        "nickname": "用户4",
+        "department": "市场部",
+        "phone": "13800138004",
+        "status": "0",
+        "createTime": "2023-10-02 12:00:00"
+    },
+    {
+        "id": 6,
+        "username": "user5",
+        "nickname": "用户5",
+        "department": "市场部",
+        "phone": "13800138005",
+        "status": "0",
+        "createTime": "2023-10-02 12:00:00"
+    },
+    {
+        "id": 7,
+        "username": "user6",
+        "nickname": "用户6",
+        "department": "财务部",
+        "phone": "13800138006",
+        "status": "1",
+        "createTime": "2023-10-03 12:00:00"
+    },
+    {
+        "id": 8,
+        "username": "user7",
+        "nickname": "用户7",
+        "department": "运营部",
+        "phone": "13800138007",
+        "status": "0",
+        "createTime": "2023-10-04 12:00:00"
+    },
+    {
+        "id": 9,
+        "username": "user8",
+        "nickname": "用户8",
+        "department": "财务部",
+        "phone": "13800138008",
+        "status": "1",
+        "createTime": "2023-10-03 12:00:00"
+    },
+    {
+        "id": 10,
+        "username": "user9",
+        "nickname": "用户9",
+        "department": "运营部",
+        "phone": "13800138009",
+        "status": "0",
+        "createTime": "2023-10-04 12:00:00"
+    }
+]

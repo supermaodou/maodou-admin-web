@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "menuName": "系统管理",
+        "icon": "Setting",
+        "orderNum": 1,
+        "permission": "",
+        "path": "/system",
+        "component": "",
+        "menuType": "M",
+        "status": "1",
+        "children": [
+            {
+                "id": 11,
+                "menuName": "用户管理",
+                "icon": "User",
+                "orderNum": 1,
+                "permission": "",
+                "path": "user",
+                "component": "system/User",
+                "menuType": "C",
+                "status": "1",
+                "children": [
+                    {
+                        "id": 111,
+                        "menuName": "用户查询",
+                        "icon": "",
+                        "orderNum": 1,
+                        "permission": "system:user:query",
+                        "path": "",
+                        "component": "",
+                        "menuType": "F",
+                        "status": "1"
+                    },
+                    {
+                        "id": 112,
+                        "menuName": "用户新增",
+                        "icon": "",
+                        "orderNum": 2,
+                        "permission": "system:user:add",
+                        "path": "",
+                        "component": "",
+                        "menuType": "F",
+                        "status": "1"
+                    }
+                ]
+            },
+            {
+                "id": 12,
+                "menuName": "角色管理",
+                "icon": "UserFilled",
+                "orderNum": 2,
+                "permission": "",
+                "path": "role",
+                "component": "system/Role",
+                "menuType": "C",
+                "status": "1"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "menuName": "系统监控",
+        "icon": "Monitor",
+        "orderNum": 2,
+        "permission": "",
+        "path": "/monitor",
+        "component": "",
+        "menuType": "M",
+        "status": "1"
+    }
+]
