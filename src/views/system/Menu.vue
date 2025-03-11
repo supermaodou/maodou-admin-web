@@ -103,9 +103,9 @@
         </el-form-item>
         <el-form-item label="菜单类型">
           <el-radio-group v-model="form.menuType">
-            <el-radio label="M">目录</el-radio>
-            <el-radio label="C">菜单</el-radio>
-            <el-radio label="F">按钮</el-radio>
+            <el-radio value="M">目录</el-radio>
+            <el-radio value="C">菜单</el-radio>
+            <el-radio value="F">按钮</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="菜单名称">
@@ -128,8 +128,8 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">
-            <el-radio label="1">启用</el-radio>
-            <el-radio label="0">禁用</el-radio>
+            <el-radio value="1">启用</el-radio>
+            <el-radio value="0">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>

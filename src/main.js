@@ -31,5 +31,7 @@ app.use(directive);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
+// 解决非被动事件监听警告，提升滚动性能  
+import "default-passive-events";
 
 app.mount('#app');
