@@ -48,6 +48,12 @@ const routes = [
                         component: () => import('../views/system/Menu.vue'),
                         meta: { title: '菜单管理', icon: 'el-icon-menu' },
                     },
+                    {
+                        path: 'dict',
+                        name: 'Dict',
+                        component: () => import('../views/system/Dict.vue'),
+                        meta: { title: '字典管理', icon: 'el-icon-collection' },
+                    },
                 ],
             },
             // 个人设置

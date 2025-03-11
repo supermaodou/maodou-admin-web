@@ -73,7 +73,12 @@ export default {
                                 'system:role:delete',
                                 'system:menu:add',
                                 'system:menu:edit',
-                                'system:menu:delete'
+                                'system:menu:delete',
+                                'system:dict:add',
+                                'system:dict:batchDelete',
+                                'system:dict:data',
+                                'system:dict:edit',
+                                'system:dict:delete'
                             ],
                             roles: ['admin'],
                         };

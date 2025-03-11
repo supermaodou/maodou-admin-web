@@ -109,6 +109,12 @@ function generateMenus(roles) {
                         icon: 'Menu',
                         title: '菜单管理',
                     },
+                    {
+                        path: '/system/dict',
+                        name: 'Dict',
+                        icon: 'Collection',
+                        title: '字典管理',
+                    },
                 ],
             },
             {
