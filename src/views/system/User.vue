@@ -48,8 +48,8 @@
         <el-table-column prop="phone" label="手机号码" width="150"></el-table-column>
         <el-table-column prop="status" label="状态" width="120">
           <template #default="scope">
-            <el-tag :type="scope.row.status === '1' ? 'success' : 'danger'">
-              {{ scope.row.status === '1' ? '启用' : '禁用' }}
+            <el-tag :type="scope.row.status === '0' ? 'success' : 'danger'">
+              {{ scope.row.status === '0' ? '启用' : '禁用' }}
             </el-tag>
           </template>
         </el-table-column>
@@ -95,8 +95,8 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="form.status">
-            <el-option label="启用" value="1"></el-option>
-            <el-option label="禁用" value="0"></el-option>
+            <el-option label="启用" value="0"></el-option>
+            <el-option label="禁用" value="1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="创建时间">
@@ -165,8 +165,8 @@ export default {
           ...this.searchForm
         }
         const res = await userApi.getUserList(params)
-        this.tableData = res.data.list || []
-        this.pagination.total = res.data.total || 0
+        this.tableData = res || []
+        this.pagination.total = res.length || 0
       } catch (error) {
         console.error('获取用户列表失败：', error)
         this.$message.error('获取用户列表失败')

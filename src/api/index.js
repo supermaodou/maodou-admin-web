@@ -21,44 +21,44 @@ export const userApi = {
     },
     // 获取用户列表
     getUserList: (params) => {
-        // return request({
-        //     url: '/user/info',
-        //     method: 'get',
-        //     params
-        // })
+        return request({
+            url: '/user/list',
+            method: 'get',
+            params
+        })
 
         // 模拟后端分页和筛选
-        return new Promise((resolve) => {
-            let result = [...userData]
+        // return new Promise((resolve) => {
+        //     let result = [...userData]
 
-            // 筛选
-            if (params.username) {
-                result = result.filter(item => item.username.includes(params.username))
-            }
-            if (params.phone) {
-                result = result.filter(item => item.phone.includes(params.phone))
-            }
-            if (params.status) {
-                result = result.filter(item => item.status === params.status)
-            }
+        //     // 筛选
+        //     if (params.username) {
+        //         result = result.filter(item => item.username.includes(params.username))
+        //     }
+        //     if (params.phone) {
+        //         result = result.filter(item => item.phone.includes(params.phone))
+        //     }
+        //     if (params.status) {
+        //         result = result.filter(item => item.status === params.status)
+        //     }
 
-            // 计算总数
-            const total = result.length
+        //     // 计算总数
+        //     const total = result.length
 
-            // 分页
-            const start = (params.page - 1) * params.pageSize
-            const end = start + params.pageSize
-            result = result.slice(start, end)
+        //     // 分页
+        //     const start = (params.page - 1) * params.pageSize
+        //     const end = start + params.pageSize
+        //     result = result.slice(start, end)
 
-            // 模拟接口返回格式
-            resolve({
-                code: 200,
-                data: {
-                    list: result,
-                    total: total
-                }
-            })
-        })
+        //     // 模拟接口返回格式
+        //     resolve({
+        //         code: 200,
+        //         data: {
+        //             list: result,
+        //             total: total
+        //         }
+        //     })
+        // })
     }
 }
 
